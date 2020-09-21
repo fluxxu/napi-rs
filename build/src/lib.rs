@@ -19,7 +19,7 @@ cfg_if! {
 
       let dev_dir: PathBuf = [
         &var("HOMEDRIVE").expect("Get env HOMEDRIVE failed"),
-        &var("HOMEPATH").expect("Get env HOMEDRIVE failed"),
+        &var("HOMEPATH").expect("Get env HOMEPATH failed"),
         ".napi-rs"
       ].iter().collect();
 
@@ -57,6 +57,17 @@ cfg_if! {
         println!("cargo:rustc-cdylib-link-arg=/DELAYLOAD:node.exe");
       }
       setup_napi_feature();
+    }
+
+    fn ensure_dev_dir(subfolder: &str) -> PathBuf {
+      let dev_dir: PathBuf = [
+        &var("HOMEDRIVE").expect("Get env HOMEDRIVE failed"),
+        &var("HOMEPATH").expect("Get env HOMEPATH failed"),
+        ".napi-rs",
+        subfolder
+      ].iter().collect();
+
+
     }
   } else if #[cfg(target_os = "macos")] {
     /// Set up the build environment by setting Cargo configuration variables.
